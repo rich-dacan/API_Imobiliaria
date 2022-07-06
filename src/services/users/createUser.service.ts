@@ -7,16 +7,6 @@ const createUserService = async ({ nome, email, password, adm}: IUserRequest): P
 
   const userRepository = AppDataSource.getRepository(User);
 
-  const findUser = await userRepository.findOne({
-    where: {
-      email: email
-    }
-  })
-
-  if (findUser) {
-    throw new Error("User already exists")
-  }
-
   const hashedPassword = bcrypt.hashSync(password, 10);
 
   const newUser = userRepository.create({

@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import express from "express";
-import userRouters from "./routers";
+import userRouters from "./routers/user.routers";
 
 const app = express();
 const port = 3000;

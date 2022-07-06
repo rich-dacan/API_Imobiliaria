@@ -1,7 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, UpdateDateColumn, CreateDateColumn } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, UpdateDateColumn, CreateDateColumn, Unique } from "typeorm"
 
 @Entity("users")
-
+@Unique(["email"])
 class User {
 
   @PrimaryGeneratedColumn('uuid')
