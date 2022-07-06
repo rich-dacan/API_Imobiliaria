@@ -14,3 +14,8 @@ export interface IUserResponse {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface IUserLogin {
+  email: string;
+  password: string;
+}
