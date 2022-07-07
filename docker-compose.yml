@@ -1,0 +1,47 @@
+version: '3.9'
+
+# run typeorm in docker container:
+# docker exec api_imob yarn typeorm migration:run -d src/data-source
+
+services:
+  api:
+    container_name: api_imob
+    build: .
+    ports:
+      - 3000:3000
+    environment:
+      - DB_HOST=db
+      - DB_USER=rikhard
+      - DB_PASSWORD=1234
+      - DB=imobiliaria_database
+      - SECRET_KEY=3553497a45f5136602a332338a8ca85cb5bd6bc8
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/app
+  
+  db:
+    container_name: db_imob
+    image: postgres:14 
+    ports:
+      - 5431:5432
+    environment:
+      - POSTGRES_USER=rikhard
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=imobiliaria_database
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rikhard -d imobiliaria_database"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    volumes:
+      - postgres_imob:/var/lib/postgresql/data
+
+volumes:
+  postgres_imob:
+    driver: local
+
+
+    
