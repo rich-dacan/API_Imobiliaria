@@ -4,6 +4,7 @@ import { User } from "../../entities/user.entity";
 import jwt from "jsonwebtoken";
 import { compare } from "bcryptjs";
 import { IUserLogin } from "../../interfaces/users";
+import { AppError } from "../../errors/AppError";
 
 
 const createUserSessionService = async ({ email, password}: IUserLogin): Promise<string> => {
@@ -17,17 +18,17 @@ const createUserSessionService = async ({ email, password}: IUserLogin): Promise
   });
 
   if (!user) {
-    throw new Error("Invalid credentials")
+    throw new AppError("Invalid credentials", 403)
   }
 
   if (!user.ativo) {
-    throw new Error("User not active")
+    throw new AppError("User not active")
   }
 
   const passwordMatch = await compare(password, user.password);
 
   if (!passwordMatch) {
-    throw new Error("Wrong email/password")
+    throw new AppError("Invalid credentials", 403)
   }
 
   const token = jwt.sign({
